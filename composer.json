@@ -1,0 +1,8 @@
+{
+    "name": "guvi/intern-project",
+    "description": "Guvi Internship Project",
+    "require": {
+        "mongodb/mongodb": "^1.15",
+        "predis/predis": "^2.0"
+    }
+}
