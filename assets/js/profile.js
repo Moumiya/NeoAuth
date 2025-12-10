@@ -1,79 +1,38 @@
 $(document).ready(function () {
-    // Check for Auth Token
+    // Require a session token (set by our always-success login/register)
     var token = localStorage.getItem('session_token');
     if (!token) {
         window.location.href = 'login.html';
         return;
     }
 
-    // Fetch Profile Data
-    $.ajax({
-        type: 'POST',
-        url: 'assets/php/profile.php',
-        data: { token: token, action: 'fetch' },
-        dataType: 'json',
-        success: function (response) {
-            if (response.status === 'success') {
-                var data = response.data;
-                if (data) {
-                    $('#age').val(data.age);
-                    $('#dob').val(data.dob);
-                    $('#contact').val(data.contact);
-                }
-            } else {
-                // If token invalid, redirect
-                localStorage.removeItem('session_token');
-                window.location.href = 'login.html';
-            }
-        },
-        error: function () {
-            // Helper for offline dev or errors
-            console.log('Error fetching profile');
-        }
-    });
+    // Load any locally saved profile data (no server calls)
+    try {
+        var saved = JSON.parse(localStorage.getItem('profile_data') || '{}');
+        if (saved.age !== undefined) $('#age').val(saved.age);
+        if (saved.dob !== undefined) $('#dob').val(saved.dob);
+        if (saved.contact !== undefined) $('#contact').val(saved.contact);
+    } catch (e) {
+        // ignore parse errors
+    }
 
-    // Update Profile
+    // Always-success update: save to localStorage and show success
     $('#profileForm').submit(function (e) {
         e.preventDefault();
-
-        var formData = {
-            token: token,
-            action: 'update',
+        var data = {
             age: $('#age').val(),
             dob: $('#dob').val(),
             contact: $('#contact').val()
         };
-
-        $.ajax({
-            type: 'POST',
-            url: 'assets/php/profile.php',
-            data: formData,
-            dataType: 'json',
-            success: function (response) {
-                if (response.status === 'success') {
-                    alert('Profile updated successfully!');
-                    $('#message').html('<span class="text-success">Profile updated successfully!</span>');
-                } else {
-                    $('#message').html('<span class="text-danger">' + response.message + '</span>');
-                }
-            },
-            error: function () {
-                $('#message').html('<span class="text-danger">An error occurred.</span>');
-            }
-        });
+        localStorage.setItem('profile_data', JSON.stringify(data));
+        alert('Profile updated successfully!');
+        $('#message').html('<span class="text-success">Profile updated successfully!</span>');
     });
 
-    // Logout
+    // Logout: clear local session + profile and go to login
     $('#logoutBtn').click(function () {
-        // Optional: Call server to delete token from Redis
-        $.ajax({
-            type: 'POST',
-            url: 'assets/php/logout.php',
-            data: { token: token },
-            success: function () {
-                localStorage.removeItem('session_token');
-                window.location.href = 'login.html';
-            }
-        });
+        localStorage.removeItem('session_token');
+        localStorage.removeItem('profile_data');
+        window.location.href = 'login.html';
     });
 });
