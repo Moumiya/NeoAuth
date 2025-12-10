@@ -13,9 +13,9 @@ $(document).ready(function () {
         alert('Successfully Logged In');
         $('#message').html('<span class="text-success">Successfully Logged In</span>');
 
-        // Redirect to Sign-In page (login.html) as requested
+        // Redirect to Sign-Up page (register.html) as requested
         setTimeout(function () {
-            window.location.href = 'login.html';
+            window.location.href = 'register.html';
         }, 1000);
     });
 });
