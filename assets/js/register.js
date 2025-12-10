@@ -10,7 +10,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: 'php/register.php',
+            url: 'assets/php/register.php',
             data: formData,
             dataType: 'json',
             success: function (response) {

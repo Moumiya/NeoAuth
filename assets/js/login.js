@@ -10,7 +10,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: 'php/login.php',
+            url: 'assets/php/login.php',
             data: { email: email, password: password },
             dataType: 'json',
             success: function (res) {

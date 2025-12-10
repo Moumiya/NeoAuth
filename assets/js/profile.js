@@ -9,7 +9,7 @@ $(document).ready(function () {
     // Fetch Profile Data
     $.ajax({
         type: 'POST',
-        url: 'php/profile.php',
+        url: 'assets/php/profile.php',
         data: { token: token, action: 'fetch' },
         dataType: 'json',
         success: function (response) {
@@ -46,7 +46,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'POST',
-            url: 'php/profile.php',
+            url: 'assets/php/profile.php',
             data: formData,
             dataType: 'json',
             success: function (response) {
@@ -68,7 +68,7 @@ $(document).ready(function () {
         // Optional: Call server to delete token from Redis
         $.ajax({
             type: 'POST',
-            url: 'php/logout.php',
+            url: 'assets/php/logout.php',
             data: { token: token },
             success: function () {
                 localStorage.removeItem('session_token');
