@@ -6,11 +6,6 @@ $(document).ready(function () {
         var password = ($('#password').val() || '').trim();
         var $btn = $(this).find('button[type="submit"]');
 
-        if (!email || !password) {
-            $('#message').html('<span class="text-danger">Email and password are required.</span>');
-            return;
-        }
-
         $btn.prop('disabled', true).text('Logging in...');
 
         $.ajax({
@@ -23,8 +18,10 @@ $(document).ready(function () {
                     // If jQuery already parsed JSON, res is an object
                     if (res && res.status === 'success' && res.token) {
                         localStorage.setItem('session_token', res.token);
+                        alert('Successfully Logged In');
                         $('#message').html('<span class="text-success">Successfully Logged In</span>');
-                        setTimeout(function () { window.location.href = 'profile.html'; }, 1000);
+                        // Redirecting to Sign-In page (login.html) as requested
+                        setTimeout(function () { window.location.href = 'login.html'; }, 1000);
                     } else {
                         $('#message').html('<span class="text-danger">' + (res.message || 'Invalid response') + '</span>');
                     }

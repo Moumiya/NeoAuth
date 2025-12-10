@@ -18,7 +18,7 @@ $(document).ready(function () {
                     alert('Successfully Registered');
                     $('#message').html('<span class="text-success">Successfully Registered</span>');
                     setTimeout(function () {
-                        window.location.href = 'login.html';
+                        window.location.href = 'profile.html';
                     }, 1500);
                 } else {
                     $('#message').html('<span class="text-danger">' + response.message + '</span>');
