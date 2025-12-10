@@ -1,17 +1,41 @@
 $(document).ready(function () {
-    // Always-success registration: show success and redirect to Profile page
     $('#registerForm').submit(function (e) {
         e.preventDefault();
 
-        // Set a dummy session token so Profile page is accessible right away
-        var token = 'dummy_' + Date.now().toString(36);
-        localStorage.setItem('session_token', token);
+        var demo = window.APP_CONFIG && window.APP_CONFIG.demoMode === true;
 
-        alert('Successfully Registered');
-        $('#message').html('<span class="text-success">Successfully Registered</span>');
+        if (demo) {
+            var token = 'dummy_' + Date.now().toString(36);
+            localStorage.setItem('session_token', token);
+            alert('Successfully Registered');
+            $('#message').html('<span class="text-success">Successfully Registered</span>');
+            setTimeout(function () { window.location.href = 'profile.html'; }, 1500);
+            return;
+        }
 
-        setTimeout(function () {
-            window.location.href = 'profile.html';
-        }, 1500);
+        var formData = {
+            name: $('#name').val(),
+            email: $('#email').val(),
+            password: $('#password').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: 'assets/php/register.php',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+                if (response.status === 'success') {
+                    alert('Successfully Registered');
+                    $('#message').html('<span class="text-success">Successfully Registered</span>');
+                    setTimeout(function () { window.location.href = 'profile.html'; }, 1500);
+                } else {
+                    $('#message').html('<span class="text-danger">' + response.message + '</span>');
+                }
+            },
+            error: function () {
+                $('#message').html('<span class="text-danger">An error occurred. Please try again.</span>');
+            }
+        });
     });
 });
