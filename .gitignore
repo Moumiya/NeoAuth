@@ -1,0 +1,9 @@
+*.pem
+*.key
+.DS_Store
+node_modules/
+vendor/
+.env
+router.php
+.gemini/
+.agent/
